@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
+import Loader from './components/loader-status/Loader';
+import {useAppDispatch, useAppSelector} from './store/state';
+import {getAllHeroes} from "./store/heroesRedusers";
+import HeroesList from './components/HeroesList/HeroesList';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const state = useAppSelector(state => state.features)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        console.log("uesEffect done")
+        dispatch<any>(getAllHeroes())
+    }, [])
+    return (
+        <div>
+            {state.status === 'loading' && <Loader/>}
+            <HeroesList/>
+        </div>
+    );
 }
 
 export default App;
