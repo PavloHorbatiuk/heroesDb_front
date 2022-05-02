@@ -2,7 +2,6 @@ import {authAPI} from '../api/api';
 import {setStatusAC, setStatusACType} from './LoaderRedusers';
 import {IGlobalState} from './state';
 import {ThunkAction} from 'redux-thunk';
-import {error} from 'console';
 import {StateHero} from "../components/HeroesList/CreateHero";
 
 enum ACTIONS_TYPE {
@@ -17,7 +16,7 @@ export interface AllHeroesType {
     superpowers: string;
     catch_phrase: string;
     image: string;
-};
+}
 
 export type InitialStateType = {
     heroesData: Array<AllHeroesType>;
@@ -42,13 +41,12 @@ export const setAllHeroesAC = (data: Array<AllHeroesType>) => ({
     type: ACTIONS_TYPE.SET_HEROES_ALL,
     payload: data
 } as const);
-export const createHeroAC = (values: StateHero) => ({})
 
 export const getAllHeroes = (): ThunkType => async (dispatch) => {
     dispatch(setStatusAC('loading'));
     try {
-        const heros = await authAPI.getAll();
-        const {status, data, statusText} = heros;
+        const heroes = await authAPI.getAll();
+        const {status, data, statusText} = heroes;
         status === 200 ? dispatch(setAllHeroesAC(data)) : console.log(statusText);
         dispatch(setStatusAC('succeeded'));
         console.log(data)

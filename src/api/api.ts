@@ -10,16 +10,16 @@ export const authAPI = {
         return instance.get('all');
     },
     getOne(id: string) {
-        return instance.get('models',);
+        return instance.get('id',);
     },
     create(data: StateHero) {
         return instance.post('create', {data});
     },
     delete(id: string) {
-        return instance.delete('models');
+        return instance.delete('id');
     },
     update(id: string) {
-        return instance.put('models');
+        return instance.put('id');
     },
 };
 
