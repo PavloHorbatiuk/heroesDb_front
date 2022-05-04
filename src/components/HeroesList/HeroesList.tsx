@@ -15,10 +15,11 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import {useSelector} from "react-redux";
 import {IGlobalState, useAppDispatch} from "../../store/state";
-import {AllHeroesType, deleteHero} from "../../store/heroesRedusers";
-import {TextField} from "@mui/material";
+import {AllHeroesType} from "../../store/heroesRedusers";
 import PeopleIcon from '@mui/icons-material/People';
-import ModalWindow from "../pop-up-window/ModalWindow";
+import ModalCreateHero from "../pop-up-window/ModalCreateHero";
+import SearchHero from "../SearchHero";
+import DescriptionHero from "../pop-up-window/DescriptionHero";
 
 function Copyright() {
     return (
@@ -34,10 +35,11 @@ function Copyright() {
 }
 
 
-export default function Album() {
+export default function ModalWindowCreateHero() {
     const dispatch = useAppDispatch()
     const state = useSelector<IGlobalState, AllHeroesType[]>(state => state.heroes.heroesData)
     // const deleteHandler = () => dispatch<any>(deleteHero())
+    const openDescription = () => <DescriptionHero/>
     return (
         <div>
             <CssBaseline/>
@@ -72,8 +74,7 @@ export default function Album() {
                             one step to find all about hero...
                         </Typography>
                         <Stack spacing={1}>
-                            <TextField sx={{width: '100%'}} id="standard-basic" label="Type a hero"
-                                       variant="standard"/>
+                            <SearchHero/>
                             <Button>Find a hero</Button>
                         </Stack>
                         <Stack
@@ -82,7 +83,7 @@ export default function Album() {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <ModalWindow/>
+                            <ModalCreateHero/>
                         </Stack>
                     </Container>
                 </Box>
@@ -112,9 +113,9 @@ export default function Album() {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button size="small">View</Button>
+                                        <DescriptionHero/>
                                         <Button size="small">Edit</Button>
-                                        <Button  size="small">delete</Button>
+                                        <Button size="small">delete</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>
