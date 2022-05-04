@@ -1,13 +1,12 @@
-import {FormControl} from "@mui/material";
+import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import Button from "@mui/material/Button";
-import OnechangeHendler from "./onChangeHendler";
 import {useAppDispatch} from "../../store/state";
 import {createHero} from "../../store/heroesRedusers";
+import {useFormik} from "formik";
 
 export interface StateHero {
     nickname: string;
@@ -20,70 +19,95 @@ export interface StateHero {
 
 export default function CreateHero() {
     const dispatch = useAppDispatch()
-    const [values, setValues] = React.useState<StateHero>({
-        nickname: '',
-        real_name: '',
-        origin_description: '',
-        superpowers: '',
-        catch_phrase: '',
-        image: ''
-    });
+    const formik = useFormik({
+        initialValues: {
+            nickname: '',
+            real_name: '',
+            origin_description: '',
+            superpowers: '',
+            catch_phrase: '',
+            image: ''
+        },
+        onSubmit: values => {
+            const formData = new FormData();
+            for (let value in values) {
+                // @ts-ignore
+                formData.append(value, values[value]);
+            }
+            dispatch<any>(createHero(formData))
+        }
+    })
 
-
-    const handleChange = (prop: keyof StateHero) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({...values, [prop]: event.target.value});
-    };
-    debugger
-    const handlerClickButton = () => {
-        dispatch<any>(createHero({...values}))
+    const fileChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+        formik.setFieldValue('image', e.target!.files[0]!)
     }
 
     return (
-        <Box component="form">
-            <Container maxWidth="sm">
-                <Stack spacing={2}>
+        <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+            <Box>
+                <Container maxWidth="sm">
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
                         Put information about hero to create...
                     </Typography>
-                    <FormControl>
-                        <OnechangeHendler
-                            label={"Write a nickname of hero"}
-                            nickname={"nickname"}
-                            onChangeFromInput={handleChange('nickname')}
-                            value={values.nickname}
+                    <Stack spacing={2}>
+                        <TextField
+                            variant='filled'
+                            id="nickname"
+                            label='nickname'
+                            name="nickname"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.nickname}
                         />
-                        <OnechangeHendler
-                            label={"Real name"}
-                            nickname={"Real name"}
-                            onChangeFromInput={handleChange('real_name')}
-                            value={values.real_name}
+                        <TextField
+                            label='real_name'
+                            variant='filled'
+                            id="real_name"
+                            name="real_name"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.real_name}
                         />
-                        <OnechangeHendler
-                            label={"Description: of hero"}
-                            nickname={"Description"}
-                            onChangeFromInput={handleChange('origin_description')}
-                            value={values.origin_description}
+                        <TextField
+                            label={'description'}
+                            variant='filled'
+                            id="origin_description"
+                            name="origin_description"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.origin_description}
                         />
-                        <OnechangeHendler
-                            label={"Superpowers"}
-                            nickname={"Superpowers"}
-                            onChangeFromInput={handleChange('superpowers')}
-                            value={values.superpowers}
+                        <TextField
+                            label={'superpower'}
+                            variant='filled'
+                            id="superpowers"
+                            name="superpowers"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.superpowers}
                         />
-                        <OnechangeHendler
-                            label={"Catch phrase"}
-                            nickname={"Catch phrase"}
-                            onChangeFromInput={handleChange('catch_phrase')}
-                            value={values.catch_phrase}
+                        <TextField
+                            label={'catch phrase'}
+                            variant='filled'
+                            id="catch_phrase"
+                            name="catch_phrase"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.catch_phrase}
                         />
-                        <input value={values.image} onChange={handleChange('image')} type="file"/>
-                    </FormControl>
-                    <Button type={'submit'} onClick={handlerClickButton} variant="contained">Create</Button>
-                </Stack>
-            </Container>
-        </Box>
+                        <input
+                            id="image"
+                            name="image"
+                            type='file'
+                            accept='image/*'
+                            onChange={fileChangedHandler}/>
+                        <button type="submit">Submit</button>
+                    </Stack>
+                </Container>
+            </Box>
+        </form>
     )
 }
-
 
 

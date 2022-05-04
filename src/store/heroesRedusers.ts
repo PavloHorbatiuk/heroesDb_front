@@ -49,22 +49,34 @@ export const getAllHeroes = (): ThunkType => async (dispatch) => {
         const {status, data, statusText} = heroes;
         status === 200 ? dispatch(setAllHeroesAC(data)) : console.log(statusText);
         dispatch(setStatusAC('succeeded'));
-        console.log(data)
+
     } catch (e) {
         alert(e);
     }
 };
 
-export const createHero = (values: StateHero): ThunkType => async (dispatch) => {
+export const createHero = (values: any): ThunkType => async (dispatch) => {
     dispatch(setStatusAC('loading'))
     try {
         const hero = await authAPI.create(values);
         const {status} = hero
-        status === 200 ? alert("secceeded") : console.log("good")
-        dispatch(setStatusAC('succeeded'));
+        // status === 200 ? alert("succeeded") : console.log("good")
+        alert("File Upload success");
 
+        dispatch(setStatusAC('succeeded'));
     } catch (e) {
-        alert(e);
+        console.log(e)
+    }
+}
+export const deleteHero = (id: number): ThunkType => async (dispatch) => {
+    dispatch(setStatusAC('loading'))
+    try {
+        const hero = await authAPI.delete(id);
+        const {status} = hero
+        alert("Hero deleted success");
+        dispatch(setStatusAC('succeeded'));
+    } catch (e) {
+        console.log(e)
     }
 }
 

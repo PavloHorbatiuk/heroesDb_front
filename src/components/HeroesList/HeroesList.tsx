@@ -14,8 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import {useSelector} from "react-redux";
-import {IGlobalState} from "../../store/state";
-import {AllHeroesType} from "../../store/heroesRedusers";
+import {IGlobalState, useAppDispatch} from "../../store/state";
+import {AllHeroesType, deleteHero} from "../../store/heroesRedusers";
 import {TextField} from "@mui/material";
 import PeopleIcon from '@mui/icons-material/People';
 import ModalWindow from "../pop-up-window/ModalWindow";
@@ -35,7 +35,9 @@ function Copyright() {
 
 
 export default function Album() {
+    const dispatch = useAppDispatch()
     const state = useSelector<IGlobalState, AllHeroesType[]>(state => state.heroes.heroesData)
+    // const deleteHandler = () => dispatch<any>(deleteHero())
     return (
         <div>
             <CssBaseline/>
@@ -81,7 +83,6 @@ export default function Album() {
                             justifyContent="center"
                         >
                             <ModalWindow/>
-                            <Button variant="outlined">Secondary action</Button>
                         </Stack>
                     </Container>
                 </Box>
@@ -113,6 +114,7 @@ export default function Album() {
                                     <CardActions>
                                         <Button size="small">View</Button>
                                         <Button size="small">Edit</Button>
+                                        <Button  size="small">delete</Button>
                                     </CardActions>
                                 </Card>
                             </Grid>

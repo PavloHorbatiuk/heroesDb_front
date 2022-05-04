@@ -13,10 +13,13 @@ export const authAPI = {
         return instance.get('id',);
     },
     create(data: StateHero) {
-        return instance.post('create', {data});
+        return instance.post('create', data, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            },
+        );
     },
-    delete(id: string) {
-        return instance.delete('id');
+    delete(id: number) {
+        return instance.delete(`${id}/delete`);
     },
     update(id: string) {
         return instance.put('id');
