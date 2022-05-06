@@ -7,6 +7,7 @@ import * as React from "react";
 import {useAppDispatch} from "../../store/state";
 import {createHero} from "../../store/heroesRedusers";
 import {useFormik} from "formik";
+import BasicAlerts from "../utils/alerts";
 
 export interface StateHero {
     nickname: string;
@@ -15,6 +16,12 @@ export interface StateHero {
     superpowers: string;
     catch_phrase: string;
     image: string
+}
+
+type FormikErrorType = {
+    nickname?: string
+    image?: string
+
 }
 
 export default function CreateHero() {
@@ -27,6 +34,21 @@ export default function CreateHero() {
             superpowers: '',
             catch_phrase: '',
             image: ''
+        },
+        validate: (values) => {
+            const errors: FormikErrorType = {};
+
+            if (!values.nickname) {
+                errors.nickname = 'Required'
+            } else if (values.nickname.length <= 2) {
+                errors.nickname = 'Invalid name'
+            }
+            if (!values.image) {
+                errors.image = 'Required'
+            } else if (values.image === '') {
+                errors.image = 'Please load image'
+            }
+            return errors;
         },
         onSubmit: values => {
             const formData = new FormData();
@@ -60,7 +82,10 @@ export default function CreateHero() {
                             onChange={formik.handleChange}
                             value={formik.values.nickname}
                         />
-                        <TextField
+                        {formik.touched.nickname && formik.errors.nickname
+                            ? <div>< BasicAlerts error={formik.errors.nickname}/></div>
+                            : null}
+                        < TextField
                             label='real_name'
                             variant='filled'
                             id="real_name"
@@ -102,6 +127,9 @@ export default function CreateHero() {
                             type='file'
                             accept='image/*'
                             onChange={fileChangedHandler}/>
+                        {formik.touched.image && formik.errors.image
+                            ? <div>< BasicAlerts error={formik.errors.image}/></div>
+                            : null}
                         <button type="submit">Submit</button>
                     </Stack>
                 </Container>
