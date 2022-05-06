@@ -1,15 +1,17 @@
 import {authAPI} from '../api/api';
 import {setStatusAC, setStatusACType} from './LoaderRedusers';
-import {IGlobalState} from './state';
-import {ThunkAction} from 'redux-thunk';
-import {StateHero} from "../components/HeroesList/CreateHero";
+import {TypedThunk} from './state';
+import {ParamsType} from "../components/pop-up-window/DescriptionHero";
+
 
 enum ACTIONS_TYPE {
     SET_HEROES_ALL = 'SET/HEROES/ALL',
+    DELETE_HERO = 'DELETE/HERO',
+    GET_ONE_HERO = 'GET/ONE/HER'
 }
 
-export interface AllHeroesType {
-    id: number;
+export interface HeroType {
+    id: string;
     nickname: string;
     real_name: string;
     origin_description: string;
@@ -19,10 +21,12 @@ export interface AllHeroesType {
 }
 
 export type InitialStateType = {
-    heroesData: Array<AllHeroesType>;
+    heroesData: Array<HeroType>;
+    hero: HeroType
 };
 const initialState = {
     heroesData: [],
+    hero: {} as HeroType
 };
 
 export const HeroesReducers = (
@@ -30,19 +34,22 @@ export const HeroesReducers = (
     action: ActionsType
 ): InitialStateType => {
     switch (action.type) {
+        case ACTIONS_TYPE.GET_ONE_HERO:
+            return {...state, hero: action.payload}
         case ACTIONS_TYPE.SET_HEROES_ALL:
             return {...state, heroesData: action.payload};
+        case ACTIONS_TYPE.DELETE_HERO:
+            return {...state, heroesData: state.heroesData.filter(hero => hero.id !== action.payload)}
         default:
             return state;
     }
 };
 
-export const setAllHeroesAC = (data: Array<AllHeroesType>) => ({
-    type: ACTIONS_TYPE.SET_HEROES_ALL,
-    payload: data
-} as const);
+export const setAllHeroesAC = (data: Array<HeroType>) => ({type: ACTIONS_TYPE.SET_HEROES_ALL, payload: data} as const);
+export const deleteHeroAC = (id: string) => ({type: ACTIONS_TYPE.DELETE_HERO, payload: id} as const);
+export const getOneHeroAC = (data: HeroType) => ({type: ACTIONS_TYPE.GET_ONE_HERO, payload: data} as const);
 
-export const getAllHeroes = (): ThunkType => async (dispatch) => {
+export const getAllHeroes = (): TypedThunk => async (dispatch) => {
     dispatch(setStatusAC('loading'));
     try {
         const heroes = await authAPI.getAll();
@@ -55,7 +62,7 @@ export const getAllHeroes = (): ThunkType => async (dispatch) => {
     }
 };
 
-export const createHero = (values: any): ThunkType => async (dispatch) => {
+export const createHero = (values: any): TypedThunk => async (dispatch) => {
     dispatch(setStatusAC('loading'))
     try {
         const hero = await authAPI.create(values);
@@ -68,24 +75,38 @@ export const createHero = (values: any): ThunkType => async (dispatch) => {
         console.log(e)
     }
 }
-export const deleteHero = (id: number): ThunkType => async (dispatch) => {
+export const deleteHero = (id: string): TypedThunk => async (dispatch) => {
     dispatch(setStatusAC('loading'))
     try {
         const hero = await authAPI.delete(id);
-        const {status} = hero
-        alert("Hero deleted success");
+        const {status, data} = hero
+        dispatch(deleteHeroAC(id));
+        // const heroes =
+        //     alert("Hero deleted success");
+        // dispatch(de)
+        dispatch(setStatusAC('succeeded'));
+    } catch (e) {
+        console.log(e)
+    }
+}
+export const getHero = (id: number): TypedThunk => async (dispatch) => {
+    dispatch(setStatusAC('loading'))
+    try {
+        const hero = await authAPI.getOne(id);
+        const {status, data} = hero
+        dispatch(getOneHeroAC(data));
+        // const heroes =
+        //     alert("Hero deleted success");
+        // dispatch(de)
         dispatch(setStatusAC('succeeded'));
     } catch (e) {
         console.log(e)
     }
 }
 
-export type ThunkType = ThunkAction<void,
-    IGlobalState,
-    unknown,
-    CommonActionType>;
-type CommonActionType = ActionsType;
 
 export type setAllHeroesACType = ReturnType<typeof setAllHeroesAC>;
+export type deleteHeroACType = ReturnType<typeof deleteHeroAC>;
+export type getOneHeroACACType = ReturnType<typeof getOneHeroAC>;
 
-export type ActionsType = setAllHeroesACType | setStatusACType;
+export type ActionsType = setAllHeroesACType | setStatusACType | deleteHeroACType | getOneHeroACACType;

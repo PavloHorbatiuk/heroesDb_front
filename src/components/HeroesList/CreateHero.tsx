@@ -34,7 +34,7 @@ export default function CreateHero() {
                 // @ts-ignore
                 formData.append(value, values[value]);
             }
-            dispatch<any>(createHero(formData))
+            dispatch(createHero(formData))
         }
     })
 

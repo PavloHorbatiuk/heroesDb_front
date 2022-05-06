@@ -14,12 +14,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import {useSelector} from "react-redux";
-import {IGlobalState, useAppDispatch} from "../../store/state";
-import {AllHeroesType} from "../../store/heroesRedusers";
+import {ReduxState, useAppDispatch} from "../../store/state";
+import {HeroType, deleteHero} from "../../store/heroesRedusers";
 import PeopleIcon from '@mui/icons-material/People';
 import ModalCreateHero from "../pop-up-window/ModalCreateHero";
 import SearchHero from "../SearchHero";
-import DescriptionHero from "../pop-up-window/DescriptionHero";
+import {useNavigate} from "react-router-dom";
+import {PATH} from "../utils/routes";
+import {url} from "../../api/api";
+
 
 function Copyright() {
     return (
@@ -37,9 +40,9 @@ function Copyright() {
 
 export default function ModalWindowCreateHero() {
     const dispatch = useAppDispatch()
-    const state = useSelector<IGlobalState, AllHeroesType[]>(state => state.heroes.heroesData)
-    // const deleteHandler = () => dispatch<any>(deleteHero())
-    const openDescription = () => <DescriptionHero/>
+    const state = useSelector<ReduxState, HeroType[]>(state => state.heroes.heroesData)
+    const navigate = useNavigate()
+
     return (
         <div>
             <CssBaseline/>
@@ -101,22 +104,20 @@ export default function ModalWindowCreateHero() {
                                             // 16:9
                                             pt: '56.25%',
                                         }}
-                                        image={`http://localhost:7000//${card.image}`}
+                                        image={url(card.image)}
                                         alt="random"
                                     />
                                     <CardContent sx={{flexGrow: 1}}>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             {card.nickname}
                                         </Typography>
-                                        <Typography>
-                                            {card.origin_description}
-                                        </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <DescriptionHero/>
-                                        <Button size="small">Edit</Button>
-                                        <Button size="small">delete</Button>
-                                    </CardActions>
+                                        <Button size="small" onClick={() => navigate(`/${card.id}`)}>Edit</Button>
+                                        <Button size="small"
+                                                onClick={() => navigate(`${PATH.HERO_ROUTE}/${card.id} `)}>View</Button>
+                                        <Button onClick={() => dispatch(deleteHero(card.id))}
+                                                size="small">Delete</Button></CardActions>
                                 </Card>
                             </Grid>
                         ))}
