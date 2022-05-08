@@ -95,7 +95,7 @@ export const getHero = (id: number): TypedThunk => async (dispatch) => {
     dispatch(updateStatusAC(true))
     try {
         const hero = await authAPI.getOne(id);
-        const {status, data} = hero
+        const {data} = hero
         dispatch(getOneHeroAC(data));
         dispatch(updateStatusAC(false))
     } catch (e) {

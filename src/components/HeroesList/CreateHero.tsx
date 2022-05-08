@@ -18,7 +18,7 @@ type FormikErrorType = {
 
 export const CreateHero = React.memo(function () {
         const dispatch = useAppDispatch()
-        const statusUpdate = useAppSelector(state => state.heroes.update)
+    const statusUpdate = useAppSelector(state => state.heroes.update)
         const formik = useFormik({
             initialValues: {
                 nickname: '',

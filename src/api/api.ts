@@ -8,6 +8,7 @@ export const url = (param: string) => {
 const instance = axios.create({
     // withCredentials: true,
     baseURL: `http://localhost:7000/heroes/`,
+    // baseURL: `https://superheroes-database.herokuapp.com/`,
 });
 export const authAPI = {
     getAll() {

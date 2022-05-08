@@ -14,7 +14,7 @@ import {useFormik} from "formik";
 import BasicAlerts from "../utils/alerts";
 import Button from "@mui/material/Button";
 import LoaderBackdrop from "../loader-status/BackDrom";
-import Loader from "../loader-status/Loader";
+
 
 type FormikErrorType = {
     image?: string
@@ -22,7 +22,6 @@ type FormikErrorType = {
 
 export default function ImageFeatures() {
     const dispatch = useAppDispatch()
-    const statusUpdate = useAppSelector(state => state.heroes.update)
     const statusLodaer = useAppSelector(state => state.features.status)
     const heroData = useSelector<ReduxState, HeroType>(state => state.heroes.hero)
     const {image} = heroData
