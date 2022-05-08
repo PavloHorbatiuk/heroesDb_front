@@ -30,5 +30,11 @@ export const authAPI = {
             headers: {'Content-Type': 'multipart/form-data'}
         },);
     },
+    updateImage(id: number, image: string) {
+        return instance.put(`${id}/update/image`, image,
+            {
+                headers: {'Content-Type': 'multipart/form-data'}
+            })
+    }
 };
 

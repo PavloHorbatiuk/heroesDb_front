@@ -16,7 +16,6 @@ import {useSelector} from "react-redux";
 import {ReduxState, useAppDispatch} from "../../store/state";
 import {HeroType, deleteHero} from "../../store/heroesRedusers";
 import PeopleIcon from '@mui/icons-material/People';
-import ModalCreateHero from "../pop-up-window/ModalCreateHero";
 import SearchHero from "../SearchHero";
 import {PATH} from "../utils/routes";
 import {url} from "../../api/api";
@@ -43,7 +42,7 @@ export default function ModalWindowCreateHero() {
     const dispatch = useAppDispatch()
     const heroesData = useSelector<ReduxState, HeroType[]>(state => state.heroes.heroesData)
     const navigate = useNavigate()
-
+    const routeHandler = () => navigate(PATH.CREATE_HERO)
     return (
         <div>
             <CssBaseline/>
@@ -87,7 +86,7 @@ export default function ModalWindowCreateHero() {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <ModalCreateHero/>
+                            <Button onClick={routeHandler}>Add new hero to db</Button>
                         </Stack>
                     </Container>
                 </Box>
@@ -99,14 +98,16 @@ export default function ModalWindowCreateHero() {
                                 <Card
                                     sx={{height: '100%', display: 'flex', flexDirection: 'column'}}
                                 >
-                                    <CardMedia
-                                        component="img"
-                                        sx={{
-                                            // 16:9
-                                            pt: '56.25%',
-                                        }}
-                                        image={url(card.image)}
-                                        alt="random"
+                                    <CardMedia onClick={() => navigate(`update/image/${card.id}`)}
+                                               component="img"
+                                               sx={{
+                                                   // 16:9
+                                                   cursor: 'pointer',
+                                                   height: 250,
+                                                   '&:hover': {"border": "1px solid blue"}
+                                               }}
+                                               image={url(card.image)}
+                                               alt="random"
                                     />
                                     <CardContent sx={{flexGrow: 1}}>
                                         <Typography gutterBottom variant="h5" component="h2">

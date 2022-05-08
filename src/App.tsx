@@ -8,6 +8,8 @@ import {Route, Routes} from "react-router-dom";
 import {PATH} from "./components/utils/routes";
 import {EditHero} from "./components/HeroesList/editHero";
 import TableInfo from './components/HeroesList/TableInfo';
+import {CreateHero} from "./components/HeroesList/CreateHero";
+import ImageFeatures from "./components/HeroesList/ImageFeatures";
 
 function App() {
     const statusLodaer = useAppSelector(state => state.features.status)
@@ -24,6 +26,8 @@ function App() {
                 <Route path={PATH.MAIN_ROUTE} element={<HeroesList/>}/>
                 <Route path={PATH.HERO_ROUTE} element={<TableInfo/>}/>
                 <Route path={PATH.EDIT_HERO} element={<EditHero/>}/>
+                <Route path={PATH.CREATE_HERO} element={<CreateHero/>}/>
+                <Route path={PATH.UPDATE_IMAGE} element={<ImageFeatures/>}/>
             </Routes>
         </div>
     );

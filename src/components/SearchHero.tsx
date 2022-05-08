@@ -10,7 +10,7 @@ import {Box} from '@mui/material';
 
 export default function SearchHero() {
     const dispatch = useAppDispatch()
-    const state = useSelector<ReduxState, HeroType[]>(state => state.heroes.heroesData)
+    const heroesData = useSelector<ReduxState, HeroType[]>(state => state.heroes.heroesData)
     return (<Box>
             <Container maxWidth="sm">
                 <Stack spacing={2}>
@@ -18,7 +18,7 @@ export default function SearchHero() {
                         freeSolo
                         id="free-solo-2-demo"
                         disableClearable
-                        options={state.map((option) => option.nickname)}
+                        options={heroesData.map((option) => option.nickname)}
                         renderInput={(params) => (
                             <TextField
                                 variant="standard"

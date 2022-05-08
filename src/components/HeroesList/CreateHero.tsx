@@ -14,7 +14,6 @@ import LoaderBackdrop from "../loader-status/BackDrom";
 type FormikErrorType = {
     nickname?: string
     image?: string
-
 }
 
 export const CreateHero = React.memo(function () {
