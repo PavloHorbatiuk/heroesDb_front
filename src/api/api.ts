@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {StateHero} from "../components/HeroesList/CreateHero";
+import {StateHeroType} from "../components/HeroesList/editHero";
 
 
 export const url = (param: string) => {
@@ -16,7 +16,7 @@ export const authAPI = {
     getOne(id: number) {
         return instance.get(`${id}`,);
     },
-    create(data: StateHero) {
+    create(data: StateHeroType) {
         return instance.post('create', data, {
                 headers: {'Content-Type': 'multipart/form-data'}
             },
@@ -25,8 +25,10 @@ export const authAPI = {
     delete(id: string) {
         return instance.delete(`${id}/delete`);
     },
-    update(id: string) {
-        return instance.put('id');
+    update(id: number, data: StateHeroType) {
+        return instance.put(`${id}/update`, data, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        },);
     },
 };
 

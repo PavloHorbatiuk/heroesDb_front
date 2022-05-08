@@ -1,4 +1,5 @@
 export enum PATH {
-    HERO_ROUTE = '/hero',
-    MAIN_ROUTE = '/'
+    HERO_ROUTE = 'hero/:id',
+    MAIN_ROUTE = '/',
+    EDIT_HERO = 'edit/:id'
 }
