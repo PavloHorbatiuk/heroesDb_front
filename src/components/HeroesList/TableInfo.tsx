@@ -3,14 +3,13 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {ReduxState, useAppDispatch} from "../../store/state";
 import {useSelector} from "react-redux";
 import {getHero, HeroType} from "../../store/heroesRedusers";
 import {useEffect} from "react";
-import {ParamsType} from "../pop-up-window/DescriptionHero";
 import {url} from "../../api/api";
-import {Avatar, Paper, styled} from "@mui/material";
+import {Avatar} from "@mui/material";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
@@ -19,6 +18,10 @@ interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
+}
+
+export type  ParamsType = {
+    id: string | undefined
 }
 
 function TabPanel(props: TabPanelProps) {
